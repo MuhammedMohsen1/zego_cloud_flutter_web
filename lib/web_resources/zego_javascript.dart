@@ -26,10 +26,10 @@ class ZegoJavaScript {
       element.onLoad.listen((_) {
         debugPrint('BUILD is DONE');
       });
-      // Clean up the Blob URL when it's no longer needed
-      element.onLoad.listen((_) {
-        html.Url.revokeObjectUrl(blobUrl);
-      });
+      // // Clean up the Blob URL when it's no longer needed
+      // element.onLoad.listen((_) {
+      //   html.Url.revokeObjectUrl(blobUrl);
+      // });
       return element;
     });
   }
