@@ -7,12 +7,18 @@ import 'package:flutter/material.dart';
 class ZegoJavaScript {
   //consts
   static const String viewIdLocal = 'zego-meet-container';
+
   static void buildIframeContent() async {
     debugPrint('Building IFRAME');
+    // Create a Blob from the HTML content
+
     String screenScript = _IframeContentScript();
+    final blob = html.Blob([screenScript], 'text/html');
+    final blobUrl = html.Url.createObjectUrlFromBlob(blob);
+    print(blobUrl);
     ui_web.platformViewRegistry.registerViewFactory(viewIdLocal, (int viewId) {
       final element = html.IFrameElement()
-        ..srcdoc = screenScript
+        ..src = blobUrl
         ..style.border = 'none'
         ..allow = "microphone; camera;"
         ..allowFullscreen = true;
@@ -20,7 +26,10 @@ class ZegoJavaScript {
       element.onLoad.listen((_) {
         debugPrint('BUILD is DONE');
       });
-
+      // Clean up the Blob URL when it's no longer needed
+      element.onLoad.listen((_) {
+        html.Url.revokeObjectUrl(blobUrl);
+      });
       return element;
     });
   }
@@ -64,8 +73,8 @@ class ZegoJavaScript {
       const roomID = "roomId"; // Replace with your room ID
       const userID = generateRandomUserId(20); // Replace with your user ID logic
       const userName = "Muhammed12"; // Replace with user's display name
-      const appID = [your app id];
-      const serverSecret = "[your secret id]"; 
+      const appID = 1588161922;
+      const serverSecret = "70b700b662f12e892602c841ce7d648a"; 
 
       // Generate a Kit Token by calling a method.
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, userID, userName);
